@@ -1,0 +1,36 @@
+{
+  "failed" : 0,
+  "failed_names" : [
+
+  ],
+  "generated_at" : "2026-08-29T17:28:50Z",
+  "passed" : 2,
+  "results" : [
+    {
+      "display_name" : "documentation-model",
+      "duration_seconds" : 0.0009479522705078125,
+      "name" : "documentation-model",
+      "status" : "passed",
+      "tags" : [
+        "documentation",
+        "model",
+        "semantic"
+      ]
+    },
+    {
+      "display_name" : "documentation-repository",
+      "duration_seconds" : 60.292245984077454,
+      "name" : "documentation-repository",
+      "status" : "passed",
+      "tags" : [
+        "documentation",
+        "integration",
+        "network",
+        "repository"
+      ]
+    }
+  ],
+  "skipped" : 0,
+  "title" : "Documentation flow tests",
+  "total" : 2
+}
