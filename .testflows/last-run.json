@@ -3,12 +3,12 @@
   "failed_names" : [
 
   ],
-  "generated_at" : "2026-08-29T17:28:50Z",
-  "passed" : 2,
+  "generated_at" : "2026-09-05T08:00:40Z",
+  "passed" : 8,
   "results" : [
     {
       "display_name" : "documentation-model",
-      "duration_seconds" : 0.0009479522705078125,
+      "duration_seconds" : 0.0006430149078369141,
       "name" : "documentation-model",
       "status" : "passed",
       "tags" : [
@@ -18,8 +18,83 @@
       ]
     },
     {
+      "display_name" : "documentation-snapshot",
+      "duration_seconds" : 0.00033402442932128906,
+      "name" : "documentation-snapshot",
+      "status" : "passed",
+      "tags" : [
+        "documentation",
+        "identity",
+        "semantic",
+        "snapshot"
+      ]
+    },
+    {
+      "display_name" : "documentation-snapshot-storage",
+      "duration_seconds" : 0.006116986274719238,
+      "name" : "documentation-snapshot-storage",
+      "status" : "passed",
+      "tags" : [
+        "documentation",
+        "persistence",
+        "snapshot",
+        "storage"
+      ]
+    },
+    {
+      "display_name" : "documentation-catalog",
+      "duration_seconds" : 0.0021630525588989258,
+      "name" : "documentation-catalog",
+      "status" : "passed",
+      "tags" : [
+        "catalog",
+        "documentation",
+        "query",
+        "semantic"
+      ]
+    },
+    {
+      "display_name" : "documentation-reference-resolution",
+      "duration_seconds" : 0.0003540515899658203,
+      "name" : "documentation-reference-resolution",
+      "status" : "passed",
+      "tags" : [
+        "catalog",
+        "documentation",
+        "reference",
+        "resolution",
+        "semantic"
+      ]
+    },
+    {
+      "display_name" : "documentation-repository-catalog",
+      "duration_seconds" : 0.0003399848937988281,
+      "name" : "documentation-repository-catalog",
+      "status" : "passed",
+      "tags" : [
+        "catalog",
+        "documentation",
+        "refresh",
+        "repository",
+        "semantic"
+      ]
+    },
+    {
+      "display_name" : "documentation-repository-snapshot",
+      "duration_seconds" : 0.9067540168762207,
+      "name" : "documentation-repository-snapshot",
+      "status" : "passed",
+      "tags" : [
+        "documentation",
+        "incremental",
+        "local",
+        "repository",
+        "snapshot"
+      ]
+    },
+    {
       "display_name" : "documentation-repository",
-      "duration_seconds" : 60.292245984077454,
+      "duration_seconds" : 65.50098502635956,
       "name" : "documentation-repository",
       "status" : "passed",
       "tags" : [
@@ -32,5 +107,5 @@
   ],
   "skipped" : 0,
   "title" : "Documentation flow tests",
-  "total" : 2
+  "total" : 8
 }

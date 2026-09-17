@@ -43,11 +43,21 @@ extension DocumentationFlowSuite {
                         ]
                     ),
                     content: .init(
-                        blocks: [
-                            .paragraph(
-                                "A semantic documentation symbol."
-                            ),
-                        ]
+                        authoredMarkup:
+                            "A **semantic** documentation symbol with `code`.",
+                        structuredContent: .paragraph(
+                            [
+                                .text("A "),
+                                .strong(
+                                    [
+                                        .text("semantic"),
+                                    ]
+                                ),
+                                .text(" documentation symbol with "),
+                                .code("code"),
+                                .text("."),
+                            ]
+                        )
                     ),
                     source: .init(
                         uri: "Sources/Demo/Type.swift",
@@ -80,10 +90,33 @@ extension DocumentationFlowSuite {
                 try Expect.equal(
                     collection.symbols.first?
                         .content
-                        .blocks
-                        .count,
-                    Optional(1),
-                    "symbol content remains semantic blocks"
+                        .authoredMarkup,
+                    Optional(
+                        "A **semantic** documentation symbol with `code`."
+                    ),
+                    "symbol content preserves canonical authored markup"
+                )
+
+                try Expect.equal(
+                    collection.symbols.first?
+                        .content
+                        .structuredContent,
+                    Optional(
+                        .paragraph(
+                            [
+                                .text("A "),
+                                .strong(
+                                    [
+                                        .text("semantic"),
+                                    ]
+                                ),
+                                .text(" documentation symbol with "),
+                                .code("code"),
+                                .text("."),
+                            ]
+                        )
+                    ),
+                    "symbol content stores shared structured semantics"
                 )
             }
         }

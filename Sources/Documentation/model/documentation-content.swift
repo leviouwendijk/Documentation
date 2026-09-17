@@ -1,29 +1,17 @@
+import DSL
+
 public struct DocumentationContent:
     Sendable,
     Hashable
 {
-    public indirect enum Block:
-        Sendable,
-        Hashable
-    {
-        case paragraph(String)
-
-        case code(
-            language: String?,
-            source: String
-        )
-
-        case section(
-            title: String,
-            blocks: [Block]
-        )
-    }
-
-    public let blocks: [Block]
+    public let authoredMarkup: String?
+    public let structuredContent: StructuredContent
 
     public init(
-        blocks: [Block] = []
+        authoredMarkup: String? = nil,
+        structuredContent: StructuredContent = .collection([])
     ) {
-        self.blocks = blocks
+        self.authoredMarkup = authoredMarkup
+        self.structuredContent = structuredContent
     }
 }

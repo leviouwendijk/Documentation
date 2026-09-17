@@ -28,7 +28,7 @@ extension DocumentationFlowSuite {
                     )
                 )
 
-                let storageRoot = try await DocumentationRepositoryMaterializer
+                let result = try await DocumentationRepositoryMaterializer
                     .withTemporaryMaterialization(
                         repository
                     ) { materialization in
@@ -105,15 +105,179 @@ extension DocumentationFlowSuite {
                             "Primitives module symbol graph is present"
                         )
 
-                        return materialization.storageRoot
+                        let snapshot = try DocumentationRepositoryDeriver.derive(
+                            inspection,
+                            from: materialization,
+                            toolchain: .init(
+                                rawValue: "swift-test-toolchain"
+                            )
+                        )
+
+                        try Expect.equal(
+                            snapshot.collection.title,
+                            "Primitives",
+                            "semantic collection preserves package title"
+                        )
+
+                        try Expect.equal(
+                            snapshot.package.name,
+                            "Primitives",
+                            "snapshot promotes Swift package identity into semantic topology"
+                        )
+
+                        try Expect.true(
+                            snapshot.package.modules.contains {
+                                $0.name == "Primitives"
+                            },
+                            "compiler module topology includes Primitives"
+                        )
+
+                        try Expect.true(
+                            snapshot.package.targets.contains { target in
+                                target.name == "Primitives"
+                                    && target.module
+                                        == DocumentationModuleIdentity(
+                                            rawValue: "Primitives"
+                                        )
+                            },
+                            "SwiftPM target is linked to the compiler-proven Primitives module"
+                        )
+
+                        try Expect.true(
+                            snapshot.package.products.contains { product in
+                                product.name == "Primitives"
+                                    && product.kind.rawValue == "library"
+                                    && product.targets.contains(
+                                        .init(
+                                            rawValue: "Primitives"
+                                        )
+                                    )
+                            },
+                            "library product retains typed target topology"
+                        )
+
+                        try Expect.true(
+                            !snapshot.collection.symbols.isEmpty,
+                            "semantic collection contains compiler symbols"
+                        )
+
+                        try Expect.true(
+                            !snapshot.collection.relationships.isEmpty,
+                            "semantic collection contains compiler relationships"
+                        )
+
+                        try Expect.true(
+                            snapshot.collection.symbols.contains {
+                                $0.kind.rawValue.hasPrefix(
+                                    "swift."
+                                )
+                            },
+                            "semantic symbol kinds retain language namespace"
+                        )
+
+                        try Expect.true(
+                            snapshot.collection.symbols.contains {
+                                $0.content.authoredMarkup?
+                                    .trimmingCharacters(
+                                        in: .whitespacesAndNewlines
+                                    )
+                                    .isEmpty == false
+                            },
+                            "semantic symbols preserve authored documentation markup"
+                        )
+
+                        try Expect.true(
+                            snapshot.collection.symbols.contains { symbol in
+                                guard
+                                    symbol.content.authoredMarkup?
+                                        .trimmingCharacters(
+                                            in: .whitespacesAndNewlines
+                                        )
+                                        .isEmpty == false
+                                else {
+                                    return false
+                                }
+
+                                return symbol.content.structuredContent
+                                    != .collection([])
+                            },
+                            "authored documentation is projected into shared structured content"
+                        )
+
+                        try Expect.true(
+                            snapshot.collection.symbols.contains {
+                                $0.declaration?
+                                    .fragments
+                                    .contains {
+                                        $0.referencedSymbol != nil
+                                    }
+                                    == true
+                            },
+                            "declaration fragments preserve typed symbol references"
+                        )
+
+                        let sourceReferences = snapshot
+                            .collection
+                            .symbols
+                            .compactMap(
+                                \.source
+                            )
+
+                        try Expect.true(
+                            sourceReferences.contains {
+                                $0.uri.hasPrefix(
+                                    "Sources/Primitives/"
+                                )
+                            },
+                            "repository source references become checkout-relative"
+                        )
+
+                        try Expect.true(
+                            sourceReferences.allSatisfy {
+                                !$0.uri.contains(
+                                    materialization.storageRoot.path
+                                )
+                            },
+                            "semantic source references do not retain temporary checkout paths"
+                        )
+
+                        try Expect.true(
+                            snapshot.collection.relationships.contains {
+                                $0.sourceOrigin != nil
+                            },
+                            "relationship source origins remain semantic references"
+                        )
+
+                        try Expect.true(
+                            snapshot.collection.symbols.contains {
+                                $0.provenance == .synthesized
+                            },
+                            "compiler-derived synthesized symbols remain classified"
+                        )
+
+                        return (
+                            storageRoot: materialization.storageRoot,
+                            snapshot: snapshot
+                        )
                     }
 
                 try Expect.equal(
                     FileManager.default.fileExists(
-                        atPath: storageRoot.path
+                        atPath: result.storageRoot.path
                     ),
                     false,
                     "temporary repository materialization is removed after use"
+                )
+
+                try Expect.true(
+                    !result.snapshot.collection.symbols.isEmpty,
+                    "snapshot semantic content survives temporary checkout deletion"
+                )
+
+                try Expect.equal(
+                    result.snapshot.identity.commit,
+                    result.snapshot.revision.commit,
+                    "snapshot identity retains the immutable resolved commit after checkout deletion"
                 )
             }
         }

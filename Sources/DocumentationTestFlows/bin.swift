@@ -16,6 +16,12 @@ enum DocumentationFlowSuite:
 
     static let flows: [TestFlow] = [
         documentationModelFlow,
+        documentationSnapshotFlow,
+        documentationSnapshotStorageFlow,
+        documentationCatalogFlow,
+        documentationReferenceResolutionFlow,
+        documentationRepositoryCatalogFlow,
+        documentationRepositorySnapshotFlow,
         documentationRepositoryFlow,
     ]
 }

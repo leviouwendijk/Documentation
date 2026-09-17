@@ -34,6 +34,18 @@ let package = Package(
             url: "https://github.com/leviouwendijk/Executable.git",
             branch: "master"
         ),
+        .package(
+            url: "https://github.com/leviouwendijk/DSL.git",
+            branch: "master"
+        ),
+        .package(
+            url: "https://github.com/leviouwendijk/Parsers.git",
+            branch: "master"
+        ),
+        .package(
+            url: "https://github.com/swiftlang/swift-docc-symbolkit.git",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -46,6 +58,18 @@ let package = Package(
                 .product(
                     name: "Executable",
                     package: "Executable"
+                ),
+                .product(
+                    name: "DSL",
+                    package: "DSL"
+                ),
+                .product(
+                    name: "ParsersStructuredContent",
+                    package: "Parsers"
+                ),
+                .product(
+                    name: "SymbolKit",
+                    package: "swift-docc-symbolkit"
                 ),
             ]
         ),
