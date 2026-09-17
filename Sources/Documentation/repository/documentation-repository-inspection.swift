@@ -17,7 +17,8 @@ package struct DocumentationRepositoryInspection:
 
 package enum DocumentationRepositoryInspector {
     package static func inspect(
-        _ materialization: DocumentationMaterialization
+        _ materialization: DocumentationMaterialization,
+        minimumAccessLevel: SwiftSymbolGraphAccessLevel = .public
     ) async throws -> DocumentationRepositoryInspection {
         let manifest = try await Package.manifest(
             at: materialization.checkoutRoot
@@ -25,7 +26,7 @@ package enum DocumentationRepositoryInspector {
 
         let symbolGraphs = try await Package.symbolGraphs(
             at: materialization.checkoutRoot,
-            minimumAccessLevel: .public
+            minimumAccessLevel: minimumAccessLevel
         )
 
         return .init(

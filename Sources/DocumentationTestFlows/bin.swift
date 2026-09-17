@@ -22,6 +22,7 @@ enum DocumentationFlowSuite:
         documentationReferenceResolutionFlow,
         documentationRepositoryCatalogFlow,
         documentationRepositorySnapshotFlow,
+        documentationWorkspaceSnapshotFlow,
         documentationRepositoryFlow,
     ]
 }

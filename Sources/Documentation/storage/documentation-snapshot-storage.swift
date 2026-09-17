@@ -725,6 +725,7 @@ private struct DocumentationSymbolRecord:
     let name: String
     let path: [String]
     let kind: String
+    let module: String?
     let declaration: DocumentationDeclarationRecord?
     let content: DocumentationContentRecord
     let source: DocumentationSourceReferenceRecord?
@@ -737,6 +738,7 @@ private struct DocumentationSymbolRecord:
         self.name = symbol.name
         self.path = symbol.path
         self.kind = symbol.kind.rawValue
+        self.module = symbol.module?.rawValue
         self.declaration = symbol.declaration.map {
             .init(
                 $0
@@ -772,6 +774,11 @@ private struct DocumentationSymbolRecord:
             kind: .init(
                 rawValue: kind
             ),
+            module: module.map {
+                .init(
+                    rawValue: $0
+                )
+            },
             declaration: try declaration?.semantic(),
             content: try content.semantic(),
             source: source?.semantic(),

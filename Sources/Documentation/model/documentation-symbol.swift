@@ -30,6 +30,7 @@ public struct DocumentationSymbol:
     public let name: String
     public let path: [String]
     public let kind: DocumentationSymbolKind
+    public let module: DocumentationModuleIdentity?
     public let declaration: DocumentationDeclaration?
     public let content: DocumentationContent
     public let source: DocumentationSourceReference?
@@ -40,6 +41,7 @@ public struct DocumentationSymbol:
         name: String,
         path: [String],
         kind: DocumentationSymbolKind,
+        module: DocumentationModuleIdentity? = nil,
         declaration: DocumentationDeclaration? = nil,
         content: DocumentationContent = .init(),
         source: DocumentationSourceReference? = nil,
@@ -49,6 +51,7 @@ public struct DocumentationSymbol:
         self.name = name
         self.path = path
         self.kind = kind
+        self.module = module
         self.declaration = declaration
         self.content = content
         self.source = source

@@ -71,6 +71,9 @@ package enum DocumentationSymbolGraphImporter {
             ) {
                 let imported = documentationSymbol(
                     from: symbol,
+                    module: .init(
+                        rawValue: graph.module.name
+                    ),
                     sourceOriginSymbols: sourceOriginSymbols,
                     sourceRoot: sourceRoot
                 )
@@ -130,6 +133,7 @@ package enum DocumentationSymbolGraphImporter {
 private extension DocumentationSymbolGraphImporter {
     static func documentationSymbol(
         from symbol: SymbolGraph.Symbol,
+        module: DocumentationModuleIdentity,
         sourceOriginSymbols: Set<String>,
         sourceRoot: URL
     ) -> DocumentationSymbol {
@@ -162,6 +166,7 @@ private extension DocumentationSymbolGraphImporter {
             kind: .init(
                 rawValue: kind
             ),
+            module: module,
             declaration: declaration(
                 from: symbol
             ),
