@@ -29,7 +29,7 @@ public struct DocumentationImporterVersion:
     Hashable
 {
     public static let current = Self(
-        rawValue: 2
+        rawValue: 3
     )
 
     public let rawValue: Int
