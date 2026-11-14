@@ -1037,6 +1037,19 @@ private struct DocumentationStructuredContentRecord:
                     )
                 }
             )
+
+        case .table(let header, let rows):
+            // Header row first; each row is a collection of its cells.
+            self.init(
+                kind: "table",
+                children: ([header] + rows).map {
+                    .init(
+                        .collection(
+                            $0
+                        )
+                    )
+                }
+            )
         }
     }
 
@@ -1138,6 +1151,32 @@ private struct DocumentationStructuredContentRecord:
                     try $0.semantic()
                 },
                 content: try content.semantic()
+            )
+
+        case "table":
+            let rows = try (children ?? []).map { row -> [StructuredContent] in
+                guard case .collection(let cells) = try row.semantic() else {
+                    throw DocumentationSnapshotStorageError
+                        .invalidStructuredContentShape(
+                            "table rows must be collections"
+                        )
+                }
+
+                return cells
+            }
+
+            guard let header = rows.first else {
+                throw DocumentationSnapshotStorageError
+                    .invalidStructuredContentShape(
+                        "table requires a header row"
+                    )
+            }
+
+            return .table(
+                header: header,
+                rows: Array(
+                    rows.dropFirst()
+                )
             )
 
         default:
