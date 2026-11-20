@@ -14,18 +14,8 @@ let package = Package(
                 "Documentation",
             ]
         ),
-        .executable(
-            name: "doctest",
-            targets: [
-                "DocumentationTestFlows",
-            ]
-        ),
     ],
     dependencies: [
-        .package(
-            url: "https://github.com/leviouwendijk/TestFlows.git",
-            branch: "master"
-        ),
         .package(
             url: "https://github.com/leviouwendijk/Interfaces.git",
             branch: "master"
@@ -70,20 +60,6 @@ let package = Package(
                 .product(
                     name: "SymbolKit",
                     package: "swift-docc-symbolkit"
-                ),
-            ]
-        ),
-        .executableTarget(
-            name: "DocumentationTestFlows",
-            dependencies: [
-                "Documentation",
-                .product(
-                    name: "Interfaces",
-                    package: "Interfaces"
-                ),
-                .product(
-                    name: "TestFlows",
-                    package: "TestFlows"
                 ),
             ]
         ),
